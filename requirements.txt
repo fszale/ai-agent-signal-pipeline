@@ -1,0 +1,8 @@
+langchain
+langchain-openai  # Or langchain-groq for Grok
+requests
+google-cloud-functions
+google-cloud-scheduler
+google-cloud-secret-manager
+google-cloud-firestore
+python-dotenv
