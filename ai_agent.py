@@ -17,7 +17,7 @@ if 'GOOGLE_CLOUD_PROJECT' in os.environ:  # Detect if in Cloud Functions
 else:
     api_key = os.getenv("OPENAI_API_KEY")
 
-llm = ChatOpenAI(model="gpt-4o", api_key=api_key)
+llm = ChatOpenAI(model="gpt-4o-mini", api_key=api_key)
 
 # Define pipeline configs
 PIPELINES = [
