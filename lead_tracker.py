@@ -4,7 +4,8 @@ from google.cloud import firestore
 
 # In local, use emulator if set; else real Firestore
 project_id = os.getenv("GCP_PROJECT_ID")
-db = firestore.Client(project=project_id)
+dn_name = os.getenv("FIRESTORE_DB", "(default)")
+db = firestore.Client(project=project_id,database=dn_name)
 
 def get_prior_leads(collection_name: str):
     collection = db.collection(collection_name)
@@ -26,11 +27,17 @@ def store_new_leads(new_leads, collection_name: str):
             signals = existing_data.get('signals', [])
         else:
             signals = []
+        
+        # Check for duplicate signal based on hash
+        new_signal_hash = hashlib.sha256(lead['context'].encode()).hexdigest()
+        if any(signal['hash'] == new_signal_hash for signal in signals):
+            continue  # Skip duplicate signal
+        
         signals.append({
             'context': lead['context'],
             'timestamp': lead['timestamp'],
             'source_url': lead['source_url'],
-            'status': lead['status'],  # Store status
-            'hash': hashlib.sha256(lead['context'].encode()).hexdigest()
+            'status': lead['status'],
+            'hash': new_signal_hash
         })
         doc_ref.set({'signals': signals})

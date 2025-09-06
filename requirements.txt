@@ -1,5 +1,6 @@
 langchain
 langchain-openai  # Or langchain-groq for Grok
+langgraph
 requests
 google-cloud-functions
 google-cloud-scheduler
